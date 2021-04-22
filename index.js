@@ -25,11 +25,12 @@ app.use(cors(corsOptions))
 app.use(cookieParser())
 const store = new session.MemoryStore()
 app.set('trust proxy', 1)
+app.enable('trust proxy')
 app.use(session({
     secret: 'secret',
-    resave: true,
+    resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 600000, secure: true },
+    cookie: { sameSite: 'none', maxAge: 600000, secure: true },
     proxy: true,
     store
 }))
