@@ -14,7 +14,7 @@ import session from 'express-session'
 const app = express()
 
 const corsOptions = {
-    origin: ['https://localhost:5000', 'domain.com', 'https://socket.domain.com', 'socket.domain.com'],
+    origin: ['http://localhost:3000', 'domain.com', 'https://socket.domain.com', 'socket.domain.com'],
     credentials: true,
 }
 
