@@ -113,11 +113,11 @@ function validateCookie(req, res, next) {
     }
 }
 
-app.get('/autologin', validateCookie, async (req, res) => {
-    const user2 = await User.findOne({ username: req.session.user.username })
-    console.log('autologin')
-    res.json(user2)
-})
+// app.get('/autologin', validateCookie, async (req, res) => {
+//     const user2 = await User.findOne({ username: req.session.user.username })
+//     console.log('autologin')
+//     res.json(user2)
+// })
 
 app.delete('/logout', (req, res) => {
     req.session.destroy()
