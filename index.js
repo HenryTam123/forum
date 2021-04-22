@@ -8,7 +8,7 @@ import User from './models/User.js'
 import Image from './models/image.js'
 import dotenv from 'dotenv'
 import cookieParser from 'cookie-parser'
-import session from 'cookie-session'
+import session from 'express-session'
 import * as connectMongo from 'connect-mongo';
 
 
