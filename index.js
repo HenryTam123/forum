@@ -25,7 +25,7 @@ app.use(express.urlencoded({ limit: "30mb", extended: true }))
 app.options('*', cors(corsOptions))
 app.use(cors(corsOptions))
 app.use(cookieParser())
-const MongoStore = connectMongo(session);
+const MongoStore = new connectMongo(session);
 let store = new MongoStore({
     mongooseConnection: mongoose.connection
 });
