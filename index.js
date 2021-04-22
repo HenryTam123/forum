@@ -24,11 +24,13 @@ app.use(express.urlencoded({ limit: "30mb", extended: true }))
 app.use(cors(corsOptions))
 app.use(cookieParser())
 const store = new session.MemoryStore()
+app.set('trust proxy', 1)
 app.use(session({
     secret: 'secret',
     resave: true,
     saveUninitialized: true,
-    cookie: { maxAge: 600000 },
+    cookie: { maxAge: 600000, secure: true },
+    proxy: true,
     store
 }))
 dotenv.config()
