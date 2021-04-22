@@ -110,7 +110,7 @@ function validateCookie(req, res, next) {
 }
 
 app.get('/autologin', validateCookie, async (req, res) => {
-    const user2 = await User.find({ username: req.session.user.username })
+    const user2 = await User.findOne({ username: req.session.user.username })
     console.log('autologin')
     res.json(user2)
 })
