@@ -8,8 +8,7 @@ import User from './models/User.js'
 import Image from './models/image.js'
 import dotenv from 'dotenv'
 import cookieParser from 'cookie-parser'
-import session from 'express-session'
-import connectMongo from 'connect-mongo'
+
 
 
 
@@ -17,6 +16,7 @@ const app = express()
 
 const corsOptions = {
     origin: 'https://elated-visvesvaraya-dab635.netlify.app',
+    //origin: 'http://localhost:3000',
     optionsSuccess: 200,
     credentials: true,
 }
@@ -26,21 +26,9 @@ app.use(express.urlencoded({ limit: "30mb", extended: true }))
 app.options('*', cors(corsOptions))
 app.use(cors(corsOptions))
 app.use(cookieParser())
-const MongoStore = connectMongo(session);
-let store = new MongoStore({
-    mongooseConnection: mongoose.connection
-});
+
 // const store = new session.MemoryStore()
-app.set('trust proxy', 1)
-app.enable('trust proxy')
-app.use(session({
-    secret: 'secret',
-    resave: false,
-    saveUninitialized: true,
-    proxy: true,
-    cookie: { sameSite: 'none', maxAge: 600000, secure: true },
-    store
-}))
+
 dotenv.config()
 
 app.use('/posts', postRoutes)
@@ -82,48 +70,14 @@ app.post('/login', async (req, res) => {
         password: req.body.password,
     })
     const user2 = await User.findOne({ username: req.body.username })
-    console.log(req.sessionID)
-    console.log(user)
-    try {
-        if (user.username && user.password) {
-            if (req.session.authenticated) {
-                res.json(req.session)
-            } else {
-                if (user2) {
-                    if (req.body.password === user2.password) {
-                        req.session.authenticated = true
-                        req.session.user = user
-                        res.cookie('sessionID', req.session.id)
-                        res.json(req.session)
 
-                    } else {
-                        res.json({ message: "Incorrect Username or Password" })
-                    }
-                } else {
-                    res.json({ message: "Incorrect Username or Password" })
-                }
-            }
-        } else {
-            res.json({ msg: 'bad credentials' })
-        }
-    } catch (err) {
-        console.log(err)
+    if (!user2) {
+        res.json({ message: "Invalid Username or Password" })
+    } else {
+
+        console.log(user2)
+        res.json(user2)
     }
-})
-
-function validateCookie(req, res, next) {
-    const { cookies } = req;
-    if ('sessionID' in cookies) {
-        if (cookies.sessionID === req.sessionID) {
-            next()
-        }
-    }
-}
-
-app.get('/autologin', validateCookie, async (req, res) => {
-    const user2 = await User.findOne({ username: req.session.user.username })
-    console.log('autologin')
-    res.json(user2)
 })
 
 app.delete('/logout', (req, res) => {
