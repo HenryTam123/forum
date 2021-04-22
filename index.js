@@ -14,7 +14,8 @@ import session from 'express-session'
 const app = express()
 
 const corsOptions = {
-    origin: 'http://localhost:3000',
+    origin: ['http://localhost:3000', 'https://elated-visvesvaraya-dab635.netlify.app/'],
+    optionsSuccess: 200,
     credentials: true,
 }
 
