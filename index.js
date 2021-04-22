@@ -10,11 +10,17 @@ import dotenv from 'dotenv'
 import cookieParser from 'cookie-parser'
 import session from 'express-session'
 
+
 const app = express()
+
+const corsOptions = {
+    origin: ['https://localhost:5000', 'domain.com', 'https://socket.domain.com', 'socket.domain.com'],
+    credentials: true,
+}
 
 app.use(express.json())
 app.use(express.urlencoded({ limit: "30mb", extended: true }))
-app.use(cors({ origin: true, credentials: true }))
+app.use(cors(corsOptions))
 app.use(cookieParser())
 const store = new session.MemoryStore()
 app.use(session({
