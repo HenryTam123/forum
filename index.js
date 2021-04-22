@@ -8,7 +8,7 @@ import User from './models/User.js'
 import Image from './models/image.js'
 import dotenv from 'dotenv'
 import cookieParser from 'cookie-parser'
-import session from 'cookie-session'
+import session from 'express-session'
 
 
 const app = express()
@@ -23,7 +23,7 @@ const corsOptions = {
 app.options('*', cors(corsOptions))
 app.use(cors(corsOptions))
 app.use(cookieParser())
-const store = new session.MemoryStore()
+const MongoStore = require('connect-mongo')(session);
 app.set('trust proxy', 1)
 app.enable('trust proxy')
 app.use(session({
@@ -32,7 +32,7 @@ app.use(session({
     saveUninitialized: true,
     proxy: true,
     cookie: { sameSite: 'none', maxAge: 600000, secure: true },
-    store
+    store: new MongoStore(options)
 }))
 dotenv.config()
 
