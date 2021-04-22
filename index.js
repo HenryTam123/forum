@@ -14,13 +14,13 @@ import session from 'express-session'
 const app = express()
 
 const corsOptions = {
-    origin: ['http://localhost:3000', 'domain.com', 'https://socket.domain.com', 'socket.domain.com'],
+    origin: 'http://localhost:3000',
     credentials: true,
 }
 
 app.use(express.json())
 app.use(express.urlencoded({ limit: "30mb", extended: true }))
-app.use(cors())
+app.use(cors(corsOptions))
 app.use(cookieParser())
 const store = new session.MemoryStore()
 app.use(session({
