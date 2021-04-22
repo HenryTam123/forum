@@ -9,7 +9,8 @@ import Image from './models/image.js'
 import dotenv from 'dotenv'
 import cookieParser from 'cookie-parser'
 import session from 'cookie-session'
-import connectMongo from 'connect-mongo'
+import * as connectMongo from 'connect-mongo';
+
 
 
 const app = express()
@@ -25,7 +26,7 @@ app.use(express.urlencoded({ limit: "30mb", extended: true }))
 app.options('*', cors(corsOptions))
 app.use(cors(corsOptions))
 app.use(cookieParser())
-const MongoStore = new connectMongo(session);
+const MongoStore = connectMongo(session);
 let store = new MongoStore({
     mongooseConnection: mongoose.connection
 });
