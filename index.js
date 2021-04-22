@@ -15,7 +15,7 @@ import cookieParser from 'cookie-parser'
 const app = express()
 
 const corsOptions = {
-    origin: 'https://elated-visvesvaraya-dab635.netlify.app',
+    origin: 'https://tjhkg-forum-alpha.netlify.app',
     //origin: 'http://localhost:3000',
     optionsSuccess: 200,
     credentials: true,
