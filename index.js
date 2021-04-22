@@ -13,17 +13,18 @@ import session from 'express-session'
 
 const app = express()
 
-app.use(express.json())
-app.use(express.urlencoded({ limit: "30mb", extended: true }))
 const corsOptions = {
     origin: 'https://elated-visvesvaraya-dab635.netlify.app',
     optionsSuccess: 200,
     credentials: true,
 }
+
+app.use(express.json())
+app.use(express.urlencoded({ limit: "30mb", extended: true }))
 app.options('*', cors(corsOptions))
 app.use(cors(corsOptions))
 app.use(cookieParser())
-const MongoStore = require('connect-mongo')(session);
+const store = new session.MemoryStore()
 app.set('trust proxy', 1)
 app.enable('trust proxy')
 app.use(session({
@@ -32,7 +33,7 @@ app.use(session({
     saveUninitialized: true,
     proxy: true,
     cookie: { sameSite: 'none', maxAge: 600000, secure: true },
-    store: new MongoStore(options)
+    store
 }))
 dotenv.config()
 
@@ -113,7 +114,7 @@ function validateCookie(req, res, next) {
     }
 }
 
-app.get('/autologin', async (req, res) => {
+app.get('/autologin', validateCookie, async (req, res) => {
     const user2 = await User.findOne({ username: req.session.user.username })
     console.log('autologin')
     res.json(user2)
