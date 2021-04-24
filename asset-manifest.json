@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "/forum/static/css/main.efd64b16.chunk.css",
-    "main.js": "/forum/static/js/main.3488ac93.chunk.js",
-    "main.js.map": "/forum/static/js/main.3488ac93.chunk.js.map",
+    "main.css": "/forum/static/css/main.b5d347ff.chunk.css",
+    "main.js": "/forum/static/js/main.14ebcc53.chunk.js",
+    "main.js.map": "/forum/static/js/main.14ebcc53.chunk.js.map",
     "runtime-main.js": "/forum/static/js/runtime-main.9c36c764.js",
     "runtime-main.js.map": "/forum/static/js/runtime-main.9c36c764.js.map",
-    "static/js/2.cda6e88c.chunk.js": "/forum/static/js/2.cda6e88c.chunk.js",
-    "static/js/2.cda6e88c.chunk.js.map": "/forum/static/js/2.cda6e88c.chunk.js.map",
+    "static/js/2.f618e467.chunk.js": "/forum/static/js/2.f618e467.chunk.js",
+    "static/js/2.f618e467.chunk.js.map": "/forum/static/js/2.f618e467.chunk.js.map",
     "index.html": "/forum/index.html",
-    "static/css/main.efd64b16.chunk.css.map": "/forum/static/css/main.efd64b16.chunk.css.map",
-    "static/js/2.cda6e88c.chunk.js.LICENSE.txt": "/forum/static/js/2.cda6e88c.chunk.js.LICENSE.txt"
+    "static/css/main.b5d347ff.chunk.css.map": "/forum/static/css/main.b5d347ff.chunk.css.map",
+    "static/js/2.f618e467.chunk.js.LICENSE.txt": "/forum/static/js/2.f618e467.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.9c36c764.js",
-    "static/js/2.cda6e88c.chunk.js",
-    "static/css/main.efd64b16.chunk.css",
-    "static/js/main.3488ac93.chunk.js"
+    "static/js/2.f618e467.chunk.js",
+    "static/css/main.b5d347ff.chunk.css",
+    "static/js/main.14ebcc53.chunk.js"
   ]
 }
