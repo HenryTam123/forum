@@ -1,11 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import PersonIcon from '@material-ui/icons/Person';
 import ThumbUpAltRoundedIcon from '@material-ui/icons/ThumbUpAltRounded';
 import ThumbDownAltRoundedIcon from '@material-ui/icons/ThumbDownAltRounded';
 import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
 import { Link } from 'react-router-dom'
-const Post = ({ post, users, disable }) => {
-
+const Post = ({ post, users, disable, handleLike, handleDislike }) => {
 
   return (
     <div className="post" >
@@ -41,16 +40,16 @@ const Post = ({ post, users, disable }) => {
           <p className="post-time">posted on {post.createdAt ? post.createdAt.substring(0, 10) : ' '}</p>
           <div className="group">
             <div>
-              <button className="like">
+              <button className="like" onClick={() => handleLike(post._id)}>
                 <ThumbUpAltRoundedIcon />
               </button>
-              <p className="like-count">{post.likeCount}</p>
+              <p className="like-count" >{post.likeCount ? post.likeCount.length : ''}</p>
             </div>
             <div>
-              <button className="dislike">
+              <button className="dislike" onClick={() => handleDislike(post._id)}>
                 <ThumbDownAltRoundedIcon />
               </button>
-              <p className="dislike-count">{post.dislikeCount}</p>
+              <p className="dislike-count" >{post.dislikeCount ? post.dislikeCount.length : ''}</p>
             </div>
             <div>
               <button className="comment">

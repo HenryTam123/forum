@@ -6,15 +6,17 @@ import { Link, useParams } from 'react-router-dom'
 import PersonIcon from '@material-ui/icons/Person';
 import Post from './Posts/Post/Post'
 import axios from './axios'
-const PostsDetail = ({ users, currentUser, isLoggedIn, responses }) => {
+const PostsDetail = ({ users, currentUser, isLoggedIn }) => {
     const { id } = useParams()
     const [thisPost, setThisPost] = useState([])
+    const [responses, setResponses] = useState([])
     const [userInput, setUserInput] = useState('')
+    const [isUpdate, setIsUpdate] = useState(false)
 
     useEffect(() => {
         getPost()
-
-    }, [])
+        getResponse()
+    }, [isUpdate])
 
     const getPost = async () => {
         console.log(id)
@@ -24,8 +26,15 @@ const PostsDetail = ({ users, currentUser, isLoggedIn, responses }) => {
         const res = await axios.post("/posts/post", { user }, { withCredentials: true })
         setThisPost(res.data[0])
         console.log(thisPost)
-
     }
+
+    const getResponse = async () => {
+        const res = await axios.get('/posts/response')
+        const responses = res.data
+        console.log(responses)
+        setResponses(responses)
+    }
+
 
     const handleSubmit = async () => {
         const response = {
@@ -35,7 +44,36 @@ const PostsDetail = ({ users, currentUser, isLoggedIn, responses }) => {
         }
         const res = await axios.post("/posts/response", { response }, { withCredentials: true })
         setThisPost(res.data[0])
-        window.location.reload()
+        setUserInput('')
+        setIsUpdate(!isUpdate)
+    }
+
+
+    const handleLike = async (postId) => {
+        const data = {
+            username: currentUser.username,
+            id: postId
+        }
+        try {
+            const res = await axios.patch('/posts/like', { data }, { withCredentials: true })
+            console.log(res.data)
+            setIsUpdate(!isUpdate)
+        } catch (err) {
+            console.log(err)
+        }
+    }
+    const handleDislike = async (postId) => {
+        const data = {
+            username: currentUser.username,
+            id: postId
+        }
+        try {
+            const res = await axios.patch('/posts/dislike', { data }, { withCredentials: true })
+            console.log(res.data)
+            setIsUpdate(!isUpdate)
+        } catch (err) {
+            console.log(err)
+        }
     }
 
     return (
@@ -44,7 +82,8 @@ const PostsDetail = ({ users, currentUser, isLoggedIn, responses }) => {
                 <button className="return-btn">
                     <Link to="/"><ArrowBackIosSharpIcon /></Link>
                 </button>
-                {thisPost ? <Post post={thisPost} users={users} disable={true} /> : ''}
+                {thisPost ? <Post post={thisPost} users={users} disable={true} handleLike={handleLike}
+                    handleDislike={handleDislike} /> : ''}
             </div>
             <div className="body">
                 {thisPost.response ? responses.map((response, index) => {

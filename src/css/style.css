@@ -255,6 +255,7 @@ button:focus{
     height: 40px;
     margin-right: 10px;
     box-shadow: 0px 0px 3px #73b9b9;
+    transition: 0.2s ease all;
 }
 
 .main-content .search-field input:focus{
@@ -597,7 +598,7 @@ button:focus{
     align-items: center;
     display: flex;
     overflow: hidden;
-    margin-right: 10px;
+    margin:0px 10px;
 }
 
 .post-detail .body .container{
@@ -608,10 +609,9 @@ button:focus{
 
 .post-detail .body .container.self{
     align-self: flex-end;
+    flex-direction: row-reverse;
 }
-.post-detail .body .container.self .avatar{
-    display: none;
-}
+
 .post-detail .body .response{
     background-color: #73b9b9;
     display: flex;
@@ -630,7 +630,7 @@ button:focus{
     background-color: white;
     display: flex;
     align-items: center;
-    border-top: 1px solid rgb(230, 222, 222);
+    border-top: 3px solid rgb(230, 227, 227);
     position: relative;
     padding: 0px 70px;
     margin-top: 20px;
@@ -659,6 +659,7 @@ button:focus{
     margin-right: 20px;
     border:1px solid #73b9b9;
     border-radius: 20px;
+    transition: 0.2s ease all;
 }
 
 .post-detail .reply-box input:focus{
@@ -669,7 +670,9 @@ button:focus{
     color: #73b9b9;
 }
 
-
+.avatar:hover {
+    cursor: pointer;
+}
 
 
 @media only screen and (min-width: 600px) and (max-width: 1200px) {
@@ -685,3 +688,4 @@ button:focus{
         width: 95%;
     }
 }
+

@@ -13,7 +13,7 @@ import { HashRouter as Router, Switch, Route } from 'react-router-dom'
 const App = () => {
 
     const [posts, setPosts] = useState([])
-    const [responses, setResponses] = useState([])
+
     const [categories, setCategories] = useState([])
     const [currentCategory, setCurrentCategory] = useState('Gaming')
     const [currentUser, setCurrentUser] = useState([])
@@ -22,6 +22,7 @@ const App = () => {
     const [isRegistering, setIsRegistering] = useState(false)
     const [isLogging, setIsLogging] = useState(false)
     const [isLoggedIn, setIsLoggedIn] = useState(false)
+    const [isUpdate, setIsUpdate] = useState(false)
     const [err, setError] = useState('')
 
     const getUsers = async () => {
@@ -37,22 +38,16 @@ const App = () => {
         getPost()
         getCategory()
         getUsers()
-        getResponse()
 
-    }, [])
+    }, [isUpdate])
 
     const getPost = async () => {
         const res = await axios.get('/posts')
         const posts = res.data
         setPosts(posts)
+        console.log(posts)
     }
 
-    const getResponse = async () => {
-        const res = await axios.get('/posts/response')
-        const responses = res.data
-        console.log(responses)
-        setResponses(responses)
-    }
 
     const getCategory = async () => {
         const res = await axios.get('/categories')
@@ -117,6 +112,34 @@ const App = () => {
             })
 
     }
+
+
+    const handleLike = async (postId) => {
+        const data = {
+            username: currentUser.username,
+            id: postId
+        }
+        try {
+            const res = await axios.patch('/posts/like', { data }, { withCredentials: true })
+            console.log(res.data)
+            setIsUpdate(!isUpdate)
+        } catch (err) {
+            console.log(err)
+        }
+    }
+    const handleDislike = async (postId) => {
+        const data = {
+            username: currentUser.username,
+            id: postId
+        }
+        try {
+            const res = await axios.patch('/posts/dislike', { data }, { withCredentials: true })
+            console.log(res.data)
+            setIsUpdate(!isUpdate)
+        } catch (err) {
+            console.log(err)
+        }
+    }
     return (
         <div className="body">
             <div className="main-container">
@@ -143,13 +166,14 @@ const App = () => {
                                 handleFormVisible={handleFormVisible}
                                 users={users}
                                 isLoggedIn={isLoggedIn}
+                                handleLike={handleLike}
+                                handleDislike={handleDislike}
                             />} />
                         <Route path="/post/:id" render={() =>
                             <PostsDetail
                                 users={users}
                                 currentUser={currentUser}
                                 isLoggedIn={isLoggedIn}
-                                responses={responses}
                             />} />
                     </Switch>
 
