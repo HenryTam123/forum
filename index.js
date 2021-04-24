@@ -20,7 +20,7 @@ const app = express()
 //     optionsSuccess: 200,
 //     credentials: true,
 // }
-const allowedOrigins = ['https://tjhkg-forum-alpha.netlify.app', 'https://henrytam123.github.io/']
+const allowedOrigins = ['https://tjhkg-forum-alpha.netlify.app', 'https://henrytam123.github.io']
 const corsOptions = {
     origin: function (origin, callback) {
         if (allowedOrigins.indexOf(origin) !== -1) {
@@ -28,7 +28,8 @@ const corsOptions = {
         } else {
             callback(new Error('Not allowed by CORS'))
         }
-    }
+    },
+    credentials: true,
 }
 
 app.use(express.json())
