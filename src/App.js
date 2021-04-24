@@ -7,7 +7,8 @@ import Form from './Form'
 import RegisterForm from './RegisterForm'
 import LoginForm from './LoginForm'
 import PostsDetail from './PostsDetail'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+//import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { HashRouter as Router, Switch, Route } from 'react-router-dom'
 
 const App = () => {
 
@@ -122,7 +123,7 @@ const App = () => {
                 {isLogging ? <LoginForm handleLogin={handleLogin} login={login} err={err} /> : ""}
                 {isRegistering ? <RegisterForm handleRegister={handleRegister} /> : ""}
                 {formVisible ? <Form handleFormVisible={handleFormVisible} categories={categories} currentUser={currentUser} /> : ""}
-                <Router>
+                <Router basename={process.env.PUBLIC_URL}>
                     <Sidebar
                         posts={posts}
                         categories={categories}
