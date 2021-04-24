@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import cors from 'cors'
 import postRoutes from './routes/posts.js'
 import categoryRoutes from './routes/categories.js'
-import Category from './models/category.js'
+
 import User from './models/User.js'
 import Image from './models/image.js'
 import dotenv from 'dotenv'
@@ -106,6 +106,7 @@ app.get('/users', async (req, res) => {
         res.status(404).json({ message: err.message })
     }
 })
+
 
 
 const PORT = process.env.PORT || 5000

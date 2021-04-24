@@ -8,14 +8,12 @@ const postSchema = mongoose.Schema({
     category: String,
     selectedFile: String,
 
-    likeCount: {
-        type: Number,
-        default: 0
-    },
-    dislikeCount: {
-        type: Number,
-        default: 0
-    },
+    likeCount:
+        [{ type: String }]
+    ,
+    dislikeCount:
+        [{ type: String }]
+    ,
     createdAt: {
         type: Date,
         default: new Date()

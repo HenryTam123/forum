@@ -67,6 +67,46 @@ router.post('/response', async (req, res) => {
 })
 
 
+router.patch('/like', async (req, res) => {
+    const username = req.body.data.username
+    const id = req.body.data.id
+    console.log(id)
+    console.log(username)
+    try {
+        await PostMessage.findOne({ "_id": ObjectId(id) }, (err, matchedPost) => {
+            if (matchedPost.likeCount.includes(username)) {
+                matchedPost.likeCount.splice(matchedPost.likeCount.indexOf(username), 1)
+            } else {
+                matchedPost.likeCount.push(username)
+            }
+            matchedPost.save()
+            res.status(200).json(matchedPost)
+        })
+    } catch (err) {
+        req.json({ message: err })
+    }
+})
+
+router.patch('/dislike', async (req, res) => {
+    const username = req.body.data.username
+    const id = req.body.data.id
+    console.log(id)
+    console.log(username)
+    try {
+        await PostMessage.findOne({ "_id": ObjectId(id) }, (err, matchedPost) => {
+            if (matchedPost.dislikeCount.includes(username)) {
+                matchedPost.dislikeCount.splice(matchedPost.dislikeCount.indexOf(username), 1)
+            } else {
+                matchedPost.dislikeCount.push(username)
+            }
+            matchedPost.save()
+            res.status(200).json(matchedPost)
+        })
+    } catch (err) {
+        req.json({ message: err })
+    }
+})
+
 router.post('/', async (req, res) => {
     const post = req.body.newPost
     console.log(post)
