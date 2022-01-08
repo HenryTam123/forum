@@ -7,7 +7,8 @@ const userSchema = mongoose.Schema({
         type: Number,
         default: 1
     },
-    icon: { type: String, default: '' }
+    icon: { type: String, default: '' },
+    joinedAt: { type: Date, default: new Date() }
 })
 
 const User = mongoose.model('User', userSchema)

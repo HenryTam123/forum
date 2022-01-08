@@ -9,7 +9,7 @@ import Image from './models/image.js'
 import dotenv from 'dotenv'
 import cookieParser from 'cookie-parser'
 
-
+import bcrypt from "bcrypt";
 
 
 const app = express()
@@ -56,18 +56,25 @@ app.post("/uploadphoto", async (req, res) => {
     }
 })
 
-
 app.post('/register', async (req, res) => {
     const user = req.body
     const newUser = new User(user)
     const user2 = await User.findOne({ username: req.body.username })
     console.log(user)
+
     if (user2) {
         res.json({ success: 'false', message: 'This usernmae has been used ' })
     } else {
+
+        const salt = await bcrypt.genSalt(10);
+
+        newUser.password = await bcrypt.hash(user.password, salt)
+
+        console.log(newUser.password)
+
         newUser.save()
             .then(data => {
-                res.json({ success: 'true', message: "This username is available" })
+                res.json({ success: 'true', message: "This username is available", ...data })
             })
             .catch(err => {
                 res.json({ message: err })
@@ -76,38 +83,45 @@ app.post('/register', async (req, res) => {
 })
 
 app.post('/login', async (req, res) => {
-    const user = new User({
-        username: req.body.username,
-        password: req.body.password,
-    })
-    const user2 = await User.findOne({ username: req.body.username })
+    const { username, password } = req.body;
 
-    if (!user2) {
-        res.json({ message: "Invalid Username or Password" })
+    const user = await User.findOne({ username: username })
+
+    if (!!user) {
+        const validPassword = await bcrypt.compare(password, user.password)
+
+        if (validPassword) {
+            res.status(200).send(user)
+        } else {
+            res.status(400).json({ message: "Invalid Password" })
+        }
+
     } else {
-
-        console.log(user2)
-        res.json(user2)
+        res.json({ message: "Invalid Username or Password" })
     }
+
 })
 
-app.delete('/logout', (req, res) => {
-    req.session.destroy()
+app.post('/logout', (req, res) => {
     console.log('logout')
     res.json({ message: "logout" })
 })
 
 app.get('/users', async (req, res) => {
     try {
-        const users = await User.find()
+        const users = await User.find({}, {
+            _id: 0,
+            icon: 1,
+            username: 1,
+            level: 1,
+            joinedAt: 1
+        })
         res.status(200).json(users)
 
     } catch (err) {
         res.status(404).json({ message: err.message })
     }
 })
-
-
 
 const PORT = process.env.PORT || 5000
 

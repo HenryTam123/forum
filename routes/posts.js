@@ -8,7 +8,13 @@ import mongodb from 'mongodb'
 const router = express.Router()
 const ObjectId = mongodb.ObjectID
 
+// fetch all posts by category
 router.get('/', async (req, res) => {
+
+    const cat = req.query.cat
+
+    console.log(cat)
+
     try {
         const postMessages = await PostMessage.find()
         res.status(200).json(postMessages)
@@ -18,24 +24,30 @@ router.get('/', async (req, res) => {
     }
 })
 
-
+// fetch a specific post 
 router.post('/post', async (req, res) => {
-    const id = req.body.user.id
-    console.log(id)
+    const { id } = req.body
     try {
-        const postMessage = await PostMessage.find({ _id: id })
-        console.log(postMessage)
-        res.status(200).json(postMessage)
+        // get information of a post
+        const postMessages = await PostMessage.find({ _id: id })
+
+        res.status(200).json(postMessages)
 
     } catch (err) {
         res.status(404).json({ message: err.message })
     }
 })
 
-
-router.get('/response', async (req, res) => {
+// get all comments of a post
+router.post('/comments', async (req, res) => {
     try {
-        const responses = await Response.find()
+
+        const { postId } = req.body;
+
+        const postMessages = await PostMessage.findOne({ _id: postId })
+
+        const responses = await Response.find({ "_id": { $in: postMessages.response } })
+
         res.status(200).json(responses)
 
     } catch (err) {
@@ -43,7 +55,7 @@ router.get('/response', async (req, res) => {
     }
 })
 
-
+// post comment to a post
 router.post('/response', async (req, res) => {
     const response = req.body.response
     const newResponse = new Response(response)
@@ -66,12 +78,11 @@ router.post('/response', async (req, res) => {
     }
 })
 
-
+// like a post
 router.patch('/like', async (req, res) => {
     const username = req.body.data.username
     const id = req.body.data.id
-    console.log(id)
-    console.log(username)
+
     try {
         await PostMessage.findOne({ "_id": ObjectId(id) }, (err, matchedPost) => {
             if (matchedPost.likeCount.includes(username)) {
@@ -87,11 +98,11 @@ router.patch('/like', async (req, res) => {
     }
 })
 
+// dislike a post
 router.patch('/dislike', async (req, res) => {
     const username = req.body.data.username
     const id = req.body.data.id
-    console.log(id)
-    console.log(username)
+
     try {
         await PostMessage.findOne({ "_id": ObjectId(id) }, (err, matchedPost) => {
             if (matchedPost.dislikeCount.includes(username)) {
@@ -109,10 +120,8 @@ router.patch('/dislike', async (req, res) => {
 
 router.post('/', async (req, res) => {
     const post = req.body.newPost
-    console.log(post)
     const newPost = new PostMessage(post)
 
-    console.log(newPost)
     try {
         await newPost.save()
 
